@@ -34,7 +34,7 @@ const EFFECTS: Record<string, Effect> = {
   terminal: { kind: "glitch", colors: ["#34e89e"] },
   matrix: { kind: "emojiRain", emoji: "💊", colors: ["#34e89e"] },
   disco: { kind: "spiral", colors: RAINBOW },
-  gravity: { kind: "emojiRain", emoji: "🍎" },
+  gravity: { kind: "emojiRise", emoji: "🎈" },
   "logo-7": { kind: "emojiBurst", emoji: "🚪" },
   "star-clicker": { kind: "starburst", colors: ["#ffd23f", "#fff3b0"] },
   idle: { kind: "emojiRise", emoji: "🧘" },
