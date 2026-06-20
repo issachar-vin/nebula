@@ -152,21 +152,27 @@ function Confetti() {
 }
 
 /* --------------------------------------------------------------- Gravity */
-// Hold "g": every [data-grav] element detaches and falls with bounce.
+// Hold "g": gravity cuts out and every [data-grav] element eases into a slow,
+// random weightless drift (with gentle sway + spin). Release to settle back.
 function GravityField() {
   useEffect(() => {
     let active = false;
     let raf = 0;
     let els: {
       el: HTMLElement;
-      ty: number;
-      vy: number;
-      vx: number;
       tx: number;
+      ty: number;
+      vx: number;
+      vy: number;
+      dirx: number;
+      diry: number;
       rot: number;
       vr: number;
-      floor: number;
-      right: number;
+      sway: number;
+      minx: number;
+      maxx: number;
+      miny: number;
+      maxy: number;
     }[] = [];
 
     const start = () => {
@@ -176,41 +182,67 @@ function GravityField() {
       const nodes = Array.from(
         document.querySelectorAll<HTMLElement>("[data-grav]"),
       );
+      const m = 2;
       els = nodes.map((el) => {
+        const ang = Math.random() * Math.PI * 2;
+        const target = 0.7 + Math.random() * 1.6; // eventual drift speed (px/frame)
         const r = el.getBoundingClientRect();
+        // translate bounds so the element's edges stay within the viewport
+        let minx = -r.left + m;
+        let maxx = window.innerWidth - r.right - m;
+        let miny = -r.top + m;
+        let maxy = window.innerHeight - r.bottom - m;
+        if (maxx < minx) minx = maxx = 0;
+        if (maxy < miny) miny = maxy = 0;
         return {
           el,
-          ty: 0,
           tx: 0,
-          vy: Math.random() * 2,
-          vx: (Math.random() - 0.5) * 4,
+          ty: 0,
+          vx: 0,
+          vy: 0,
+          dirx: Math.cos(ang) * target,
+          diry: Math.sin(ang) * target,
           rot: 0,
-          vr: (Math.random() - 0.5) * 8,
-          floor: window.innerHeight - r.bottom - 4,
-          right: window.innerWidth - r.right - 4,
+          vr: (Math.random() - 0.5) * 0.7,
+          sway: Math.random() * Math.PI * 2,
+          minx,
+          maxx,
+          miny,
+          maxy,
         };
       });
       const tick = () => {
         for (const o of els) {
-          o.vy += 0.9;
-          o.ty += o.vy;
-          o.tx += o.vx;
+          // ease velocity toward the drift direction -> lets go *slowly*
+          o.vx += (o.dirx - o.vx) * 0.015;
+          o.vy += (o.diry - o.vy) * 0.015;
+          o.sway += 0.02;
+          o.tx += o.vx + Math.sin(o.sway) * 0.15;
+          o.ty += o.vy + Math.cos(o.sway * 0.8) * 0.15;
+
+          // bounce off the screen edges: reverse velocity *and* drift target
+          if (o.tx <= o.minx) {
+            o.tx = o.minx;
+            o.vx = Math.abs(o.vx);
+            o.dirx = Math.abs(o.dirx);
+            o.vr = -o.vr;
+          } else if (o.tx >= o.maxx) {
+            o.tx = o.maxx;
+            o.vx = -Math.abs(o.vx);
+            o.dirx = -Math.abs(o.dirx);
+            o.vr = -o.vr;
+          }
+          if (o.ty <= o.miny) {
+            o.ty = o.miny;
+            o.vy = Math.abs(o.vy);
+            o.diry = Math.abs(o.diry);
+          } else if (o.ty >= o.maxy) {
+            o.ty = o.maxy;
+            o.vy = -Math.abs(o.vy);
+            o.diry = -Math.abs(o.diry);
+          }
+
           o.rot += o.vr;
-          if (o.ty > o.floor) {
-            o.ty = o.floor;
-            o.vy *= -0.55;
-            o.vx *= 0.7;
-            o.vr *= 0.7;
-          }
-          const leftBound = -o.el.getBoundingClientRect().left + 4;
-          if (o.tx < leftBound) {
-            o.tx = leftBound;
-            o.vx *= -0.6;
-          }
-          if (o.tx > o.right) {
-            o.tx = o.right;
-            o.vx *= -0.6;
-          }
           o.el.style.transform = `translate(${o.tx}px, ${o.ty}px) rotate(${o.rot}deg)`;
         }
         raf = requestAnimationFrame(tick);

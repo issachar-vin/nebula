@@ -28,6 +28,15 @@ body {
   cursor: none;
   transition: background 0.6s ease, color 0.6s ease;
   -webkit-font-smoothing: antialiased;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* but real inputs (the terminal) stay selectable/typable */
+input,
+textarea {
+  -webkit-user-select: text;
+  user-select: text;
 }
 
 /* Hide native cursor only on fine-pointer (desktop) devices. */
@@ -282,17 +291,45 @@ p.lead {
   50% { transform: translateY(-16px); }
 }
 
-/* ---- Void room ---- */
+/* ---- Void room (black hole) ---- */
 .void-room {
   position: fixed;
   inset: 0;
   z-index: 950;
-  background: radial-gradient(circle at center, var(--bg-2), #000 90%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
+  background: #000;
+  overflow: hidden;
   cursor: none;
+}
+.blackhole-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: grab;
+  touch-action: none;
+}
+.blackhole-canvas:active {
+  cursor: grabbing;
+}
+.void-leave {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+  z-index: 2;
+}
+.void-copy {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 8vh;
+  text-align: center;
+  padding: 0 2rem;
+  pointer-events: none;
+  text-shadow: 0 2px 24px #000, 0 0 40px #000;
+}
+.void-copy .lead {
+  margin: 0 auto;
 }
 
 /* ---- Doodle shrine (the legend) ---- */
@@ -309,16 +346,20 @@ p.lead {
 }
 .shrine-paper {
   position: relative;
-  width: min(440px, 92vw);
-  aspect-ratio: 2 / 3;
-  background: #fdf9ec;
-  background-image:
-    repeating-linear-gradient(transparent, transparent 27px, #a9c6e8 27px, #a9c6e8 28px);
+  width: min(460px, 92vw);
+  aspect-ratio: 420 / 620;
+  background:
+    radial-gradient(120% 80% at 30% 0%, rgba(255, 250, 220, 0.6), transparent 60%),
+    repeating-linear-gradient(transparent, transparent 27px, #aecbe8 27px, #aecbe8 28px),
+    #fdf8ea;
   border-radius: 4px;
-  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.7), 0 0 60px rgba(var(--glow), 0.4);
+  box-shadow:
+    0 30px 90px rgba(0, 0, 0, 0.7),
+    0 0 70px rgba(var(--glow), 0.45),
+    inset 0 0 60px rgba(180, 160, 110, 0.18);
   overflow: hidden;
-  transform: rotate(-1.2deg);
 }
+/* red margin line */
 .shrine-paper::before {
   content: "";
   position: absolute;
@@ -326,47 +367,64 @@ p.lead {
   top: 0;
   bottom: 0;
   width: 1.5px;
-  background: #e7a3a3;
+  background: #e79a9a;
+  opacity: 0.8;
 }
+/* tape strip, top-right corner */
 .shrine-paper::after {
   content: "";
   position: absolute;
-  left: 14px;
-  top: 8%;
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.06);
-  box-shadow: 0 38% 0 rgba(0, 0, 0, 0.06), 0 76% 0 rgba(0, 0, 0, 0.06);
+  top: -10px;
+  right: 18px;
+  width: 70px;
+  height: 26px;
+  background: rgba(220, 225, 235, 0.35);
+  border-left: 1px dashed rgba(255, 255, 255, 0.4);
+  border-right: 1px dashed rgba(255, 255, 255, 0.4);
+  transform: rotate(24deg);
 }
-.shrine svg { width: 100%; height: 100%; display: block; }
+.shrine svg { position: relative; width: 100%; height: 100%; display: block; }
 .shrine .ink {
   fill: none;
-  stroke: #1c2440;
-  stroke-width: 2.2;
+  stroke: #1b2440;
+  stroke-width: 2.3;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 .shrine .ink.thin { stroke-width: 1.4; }
-.shrine .fill-hair { fill: #1c2440; stroke: none; }
+.shrine .fill-hair { fill: #1b2440; stroke: none; }
+.shrine .vape { fill: #1b2440; stroke: none; }
+.shrine-hole {
+  fill: rgba(0, 0, 0, 0.12);
+  stroke: rgba(0, 0, 0, 0.18);
+  stroke-width: 1;
+}
 .flame {
-  transform-origin: center top;
-  animation: flicker 0.5s ease-in-out infinite alternate;
+  animation: flicker 0.45s ease-in-out infinite alternate;
 }
 @keyframes flicker {
-  from { transform: scaleY(1) scaleX(1); opacity: 0.9; }
-  to { transform: scaleY(1.05) scaleX(0.98); opacity: 1; }
+  from { opacity: 0.82; }
+  to { opacity: 1; }
 }
 .shrine-tag {
-  font-family: "Comic Sans MS", "Marker Felt", cursive;
-  fill: #1c2440;
+  font-family: "Comic Sans MS", "Marker Felt", "Segoe Print", cursive;
+  fill: #1b2440;
   font-size: 15px;
 }
-.shrine-url {
+.shrine-bang {
   font-family: "Comic Sans MS", "Marker Felt", cursive;
-  fill: #1c2440;
-  font-size: 46px;
+  fill: #1b2440;
+  font-size: 34px;
   font-weight: 700;
+}
+.shrine-url {
+  font-family: "Arial Black", "Impact", system-ui, sans-serif;
+  fill: #fdf8ea;
+  stroke: #1b2440;
+  stroke-width: 2.4;
+  paint-order: stroke fill;
+  font-weight: 900;
+  letter-spacing: -1px;
 }
 .shrine-caption {
   position: absolute;

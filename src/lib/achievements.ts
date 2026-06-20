@@ -16,7 +16,7 @@ export const ACHIEVEMENTS: AchievementDef[] = [
   { id: "terminal", name: "Root Access", hint: "Every good site has a back door. Try a tilde.", icon: "⌨️" },
   { id: "matrix", name: "Down the Rabbit Hole", hint: "Type what Neo saw.", icon: "💊" },
   { id: "disco", name: "Saturday Night", hint: "Type a word that makes things dance.", icon: "🪩" },
-  { id: "gravity", name: "What Goes Up", hint: "Hold the key that pulls things down.", icon: "🍎" },
+  { id: "gravity", name: "Weightless", hint: "Hold a key and cut the cord — watch things drift away.", icon: "🎈" },
   { id: "logo-7", name: "Persistent", hint: "Knock on the logo. Keep knocking.", icon: "🚪" },
   { id: "star-clicker", name: "Eagle Eye", hint: "One star is closer than it looks.", icon: "⭐" },
   { id: "idle", name: "Patience", hint: "Do absolutely nothing for a while.", icon: "🧘" },

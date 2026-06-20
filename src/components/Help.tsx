@@ -6,7 +6,7 @@ const CONTROLS: [string, string][] = [
   ["~", "open the terminal (try `help`)"],
   ["T", "open your trophy case"],
   ["P", "summon the piano — then play the keys"],
-  ["hold G", "let gravity loose"],
+  ["hold G", "cut gravity — everything drifts away"],
   ["?", "this menu"],
   ["Esc", "close anything"],
 ];

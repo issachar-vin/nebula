@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { unlock } from "../lib/achievements";
 import { sound } from "../lib/sound";
 import { useKeySequence, useTypedWords, useIdle } from "../lib/hooks";
+import BlackHole from "./BlackHole";
 
 const KONAMI = [
   "ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown",
@@ -67,6 +68,21 @@ export default function EasterEggs() {
     }
   }, []);
 
+  const closeRoom = () => {
+    setRoom(false);
+    if (location.hash) history.replaceState(null, "", location.pathname);
+  };
+
+  // The void is interactive (drag to orbit), so leave via Esc, not a click.
+  useEffect(() => {
+    if (!room) return;
+    const onEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeRoom();
+    };
+    window.addEventListener("keydown", onEsc);
+    return () => window.removeEventListener("keydown", onEsc);
+  }, [room]);
+
   return (
     <>
       <AnimatePresence>
@@ -96,30 +112,30 @@ export default function EasterEggs() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={() => {
-              setRoom(false);
-              if (location.hash) history.replaceState(null, "", location.pathname);
-            }}
             data-no-star
           >
+            <BlackHole />
             <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              style={{ textAlign: "center", maxWidth: "40ch" }}
+              className="void-copy"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8, duration: 1.2 }}
             >
-              <div style={{ fontSize: "4rem" }}>🕳️</div>
               <h2 className="section-title" style={{ fontSize: "2rem" }}>
                 the void
               </h2>
               <p className="lead">
-                You found a room that isn't on the map. There's nothing here but
-                quiet and the sound of your own curiosity.
+                A Schwarzschild black hole, ray-traced live through curved
+                spacetime. Light bends around it because the geometry tells it
+                to. Drag to orbit, scroll to fall closer.
               </p>
-              <p className="eyebrow" style={{ marginTop: "1.5rem" }}>
-                click anywhere to leave
+              <p className="eyebrow" style={{ marginTop: "1.2rem" }}>
+                drag to orbit · scroll to zoom · esc to leave
               </p>
             </motion.div>
+            <button className="void-leave btn" onClick={closeRoom} data-cursor>
+              ✕ leave
+            </button>
           </motion.div>
         )}
       </AnimatePresence>
