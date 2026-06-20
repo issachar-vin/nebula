@@ -18,26 +18,14 @@ export default function Nav() {
     }
   };
 
-  const go = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-    sound.click();
-  };
-
   return (
     <nav className="nav">
       <div className="logo" onClick={knock} data-cursor title="NEBULA">
         ◈ NEBULA
       </div>
       <div className="nav-links">
-        <span onClick={() => go("play")} data-cursor>play</span>
-        <span onClick={() => go("game")} data-cursor>reactor</span>
-        <span onClick={() => go("about")} data-cursor>about</span>
-        <span
-          onClick={() => cycle()}
-          data-cursor
-          title={`theme: ${current}`}
-        >
-          ◐ theme
+        <span onClick={() => cycle()} data-cursor title={`theme: ${current}`}>
+          ◐
         </span>
         <span
           onClick={() => {
@@ -47,7 +35,17 @@ export default function Nav() {
           data-cursor
           title="toggle sound"
         >
-          {muted ? "🔇 sound" : "🔊 sound"}
+          {muted ? "🔇" : "🔊"}
+        </span>
+        <span
+          onClick={() => {
+            window.dispatchEvent(new CustomEvent("nebula:help"));
+            sound.blip();
+          }}
+          data-cursor
+          title="how to play"
+        >
+          ?
         </span>
       </div>
     </nav>

@@ -13,7 +13,7 @@ const CONTROLS: [string, string][] = [
 
 const NUDGES = [
   "The sky is clickable. One star hides; others connect.",
-  "Hold your mouse down in the playground.",
+  "Hold the pointer still in the drift — the dust comes to you.",
   "Type words while you browse — matrix, disco, and others react.",
   "That old arcade cheat code still works here.",
   "Open your browser's dev console. Say hi.",

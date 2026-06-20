@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { isTyping } from "../lib/typing";
 
 /* ------------------------------------------------------------------ Matrix */
 function MatrixRain({ active }: { active: boolean }) {
@@ -232,7 +233,7 @@ function GravityField() {
     const down = (e: KeyboardEvent) => {
       const t = e.target as HTMLElement;
       if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA")) return;
-      if (e.key.toLowerCase() === "g" && !e.repeat) start();
+      if (e.key.toLowerCase() === "g" && !e.repeat && !isTyping()) start();
     };
     const up = (e: KeyboardEvent) => {
       if (e.key.toLowerCase() === "g") stop();

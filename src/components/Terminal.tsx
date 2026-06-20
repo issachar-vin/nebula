@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useDragControls } from "framer-motion";
 import { ACHIEVEMENTS, achievements, unlock, TOTAL } from "../lib/achievements";
 import { THEMES, themes } from "../lib/themes";
 import { sound } from "../lib/sound";
@@ -20,8 +20,12 @@ export default function Terminal() {
     BANNER.map((t) => ({ text: t, kind: "out" as const })),
   );
   const [value, setValue] = useState("");
+  const [minimized, setMinimized] = useState(false);
+  const [maximized, setMaximized] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const bodyRef = useRef<HTMLDivElement>(null);
+  const layerRef = useRef<HTMLDivElement>(null);
+  const dragControls = useDragControls();
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -35,6 +39,7 @@ export default function Terminal() {
           if (next) {
             unlock("terminal");
             sound.blip();
+            setMinimized(false);
           }
           return next;
         });
@@ -45,8 +50,8 @@ export default function Terminal() {
   }, [open]);
 
   useEffect(() => {
-    if (open) setTimeout(() => inputRef.current?.focus(), 50);
-  }, [open]);
+    if (open && !minimized) setTimeout(() => inputRef.current?.focus(), 50);
+  }, [open, minimized]);
 
   useEffect(() => {
     bodyRef.current?.scrollTo(0, bodyRef.current.scrollHeight);
@@ -162,42 +167,87 @@ export default function Terminal() {
   };
 
   return (
-    <AnimatePresence>
-      {open && (
-        <motion.div
-          className="terminal glass"
-          initial={{ y: "110%" }}
-          animate={{ y: 0 }}
-          exit={{ y: "110%" }}
-          transition={{ type: "spring", stiffness: 320, damping: 32 }}
-          data-no-star
-        >
-          <div className="terminal-bar">
-            <span className="dot red" />
-            <span className="dot yellow" />
-            <span className="dot green" />
-            <span className="terminal-title">nebula — zsh</span>
-          </div>
-          <div className="terminal-body" ref={bodyRef}>
-            {lines.map((l, i) => (
-              <div key={i} className={`tline ${l.kind ?? "out"}`}>
-                {l.text}
-              </div>
-            ))}
-            <form onSubmit={submit} className="terminal-input">
-              <span className="prompt">nebula@void ~ %</span>
-              <input
-                ref={inputRef}
-                value={value}
-                onChange={(e) => setValue(e.target.value)}
-                spellCheck={false}
-                autoComplete="off"
-                aria-label="terminal input"
+    <div className="terminal-layer" ref={layerRef}>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            className={`terminal glass${maximized ? " maximized" : ""}${
+              minimized ? " minimized" : ""
+            }`}
+            initial={{ scale: 0.85, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.85, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 320, damping: 30 }}
+            drag
+            dragListener={false}
+            dragControls={dragControls}
+            dragMomentum={false}
+            dragConstraints={layerRef}
+            dragElastic={0.04}
+            data-no-star
+          >
+            <div
+              className="terminal-bar"
+              onPointerDown={(e) => dragControls.start(e)}
+              style={{ cursor: "grab", touchAction: "none" }}
+              onDoubleClick={() => setMaximized((m) => !m)}
+            >
+              <button
+                className="dot red"
+                title="close"
+                aria-label="close terminal"
+                onPointerDown={(e) => e.stopPropagation()}
+                onClick={() => {
+                  setOpen(false);
+                  sound.tone(220, 0.08, "square", 0.12);
+                }}
               />
-            </form>
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+              <button
+                className="dot yellow"
+                title="minimize"
+                aria-label="minimize terminal"
+                onPointerDown={(e) => e.stopPropagation()}
+                onClick={() => {
+                  setMinimized((m) => !m);
+                  sound.tone(440, 0.06, "square", 0.1);
+                }}
+              />
+              <button
+                className="dot green"
+                title="maximize"
+                aria-label="maximize terminal"
+                onPointerDown={(e) => e.stopPropagation()}
+                onClick={() => {
+                  setMaximized((m) => !m);
+                  setMinimized(false);
+                  sound.tone(660, 0.06, "square", 0.1);
+                }}
+              />
+              <span className="terminal-title">nebula — zsh</span>
+            </div>
+            {!minimized && (
+              <div className="terminal-body" ref={bodyRef}>
+                {lines.map((l, i) => (
+                  <div key={i} className={`tline ${l.kind ?? "out"}`}>
+                    {l.text}
+                  </div>
+                ))}
+                <form onSubmit={submit} className="terminal-input">
+                  <span className="prompt">nebula@void ~ %</span>
+                  <input
+                    ref={inputRef}
+                    value={value}
+                    onChange={(e) => setValue(e.target.value)}
+                    spellCheck={false}
+                    autoComplete="off"
+                    aria-label="terminal input"
+                  />
+                </form>
+              </div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }

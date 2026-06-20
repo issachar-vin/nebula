@@ -1,7 +1,7 @@
 # ◈ NEBULA — a playground in the dark
 
 An interactive, animation-heavy single-page playground built for fun. Everything
-on the page reacts to you, and **most of it is hidden**. There are **25 secrets**
+on the page reacts to you, and **most of it is hidden**. There are **23 secrets**
 to discover — through the keyboard, the corners, the sky, the URL bar, and the
 dev console.
 
@@ -65,6 +65,6 @@ src/
 
 - React 18 + TypeScript, bundled by Vite
 - framer-motion for declarative animation
-- Canvas 2D for the starfield, confetti, matrix rain, and playground physics
+- Canvas 2D for the starfield, the drift field, matrix rain, and per-secret celebration effects
 - Web Audio API for all synthesized sound
 - Zero runtime asset dependencies

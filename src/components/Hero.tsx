@@ -5,17 +5,22 @@ const TITLE = "NEBULA".split("");
 
 export default function Hero() {
   return (
-    <section className="section" id="top">
+    <section className="hero" id="top">
       <motion.div
         className="eyebrow"
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.7 }}
+        transition={{ delay: 0.1, duration: 1.4 }}
       >
         a playground in the dark
       </motion.div>
 
-      <h1 className="title" aria-label="NEBULA">
+      <motion.h1
+        className="title"
+        aria-label="NEBULA"
+        animate={{ y: [0, -10, 0] }}
+        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+      >
         {TITLE.map((ch, i) => (
           <motion.span
             key={i}
@@ -25,7 +30,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 80, rotateX: -90 }}
             animate={{ opacity: 1, y: 0, rotateX: 0 }}
             transition={{
-              delay: 0.2 + i * 0.07,
+              delay: 0.2 + i * 0.08,
               type: "spring",
               stiffness: 200,
               damping: 12,
@@ -41,57 +46,25 @@ export default function Hero() {
             {ch}
           </motion.span>
         ))}
-      </h1>
+      </motion.h1>
 
       <motion.p
         className="lead"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.9 }}
-        style={{ marginTop: "1.5rem" }}
+        transition={{ delay: 1, duration: 1.6 }}
       >
-        Everything here reacts to you. Most of it is hidden. There are{" "}
-        <strong style={{ color: "var(--accent)" }}>secrets</strong> tucked into
-        the keys, the corners, the sky, and the source. Go find them.
+        nothing here is a button. everything here is a door.
       </motion.p>
 
       <motion.div
-        className="row"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.1 }}
-        style={{ marginTop: "2.5rem" }}
-      >
-        <button
-          className="btn"
-          data-cursor
-          onClick={() => {
-            document.getElementById("play")?.scrollIntoView({ behavior: "smooth" });
-            sound.zap();
-          }}
-        >
-          ↓ enter the playground
-        </button>
-        <button
-          className="btn"
-          data-cursor
-          onClick={() => {
-            window.dispatchEvent(new CustomEvent("nebula:help"));
-            sound.blip();
-          }}
-        >
-          ? how do I find secrets
-        </button>
-      </motion.div>
-
-      <motion.div
-        className="eyebrow hint-pulse"
+        className="hero-scroll"
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.6 }}
-        style={{ marginTop: "3rem", fontSize: "0.7rem" }}
+        animate={{ opacity: [0, 0.6, 0], y: [0, 10, 0] }}
+        transition={{ delay: 1.8, duration: 2.4, repeat: Infinity }}
+        aria-hidden="true"
       >
-        try the konami code · press ~ for a terminal · press ? for help
+        ⌄
       </motion.div>
     </section>
   );
