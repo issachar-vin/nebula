@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { sound } from "../lib/sound";
 import { unlock } from "../lib/achievements";
+import { isTyping } from "../lib/typing";
 
 interface Key {
   k: string; // keyboard key
@@ -60,7 +61,7 @@ export default function Piano() {
     const onKey = (e: KeyboardEvent) => {
       const t = e.target as HTMLElement;
       if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA")) return;
-      if (e.key.toLowerCase() === "p" && !e.repeat) {
+      if (e.key.toLowerCase() === "p" && !e.repeat && (open || !isTyping())) {
         setOpen((o) => !o);
         return;
       }

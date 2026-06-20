@@ -479,39 +479,129 @@ kbd {
   font-size: 0.85em;
 }
 
-/* ---- Reactor core (mini-game target) ---- */
-.reactor-core {
-  position: absolute;
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  border: none;
-  cursor: none;
-  background: radial-gradient(circle at 35% 35%, #fff, var(--accent) 45%, var(--accent-2));
-  box-shadow: 0 0 30px rgba(var(--glow), 0.8), inset 0 0 12px rgba(255, 255, 255, 0.6);
-  animation: corePulse 0.9s ease-in-out infinite;
+/* ---- Hero (abstract) ---- */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 8vh 6vw;
 }
-@keyframes corePulse {
-  0%, 100% { box-shadow: 0 0 22px rgba(var(--glow), 0.7); }
-  50% { box-shadow: 0 0 44px rgba(var(--glow), 1); }
+.hero-scroll {
+  position: absolute;
+  bottom: 5vh;
+  font-size: 2rem;
+  color: var(--muted);
+}
+
+/* ---- Drift field (abstract ambient toy) ---- */
+.drift {
+  position: relative;
+  height: 110vh;
+  width: 100%;
+}
+.drift-canvas-wrap {
+  position: absolute;
+  inset: 0;
+}
+.drift-canvas-wrap canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: none;
+}
+.drift-caption {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.drift-caption p {
+  font-family: var(--mono);
+  font-size: clamp(0.9rem, 2vw, 1.3rem);
+  letter-spacing: 0.2em;
+  color: var(--muted);
+  opacity: 0.45;
+  text-transform: lowercase;
+}
+
+/* ---- Whispers (abstract clue field) ---- */
+.whispers {
+  position: relative;
+  min-height: 150vh;
+  width: 100%;
+  overflow: hidden;
+}
+.whisper {
+  position: absolute;
+  transform-origin: center;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+  cursor: none;
+  white-space: nowrap;
+  text-shadow: 0 0 30px rgba(var(--glow), 0.3);
+  max-width: 80vw;
+}
+
+/* ---- Celebrations ---- */
+.celebration-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 880;
+  pointer-events: none;
+}
+body.celebrate-flash {
+  animation: celFlash 0.22s ease-out;
+}
+@keyframes celFlash {
+  0% { filter: brightness(1.8); }
+  100% { filter: brightness(1); }
+}
+body.celebrate-glitch #root {
+  animation: celGlitch 0.18s steps(2) 0s 4;
+}
+@keyframes celGlitch {
+  0% { transform: translate(0, 0); filter: hue-rotate(0); }
+  25% { transform: translate(-4px, 2px); filter: hue-rotate(40deg) saturate(2); }
+  50% { transform: translate(5px, -3px); filter: hue-rotate(-30deg) saturate(1.6); }
+  75% { transform: translate(-3px, -2px); filter: hue-rotate(20deg); }
+  100% { transform: translate(0, 0); filter: hue-rotate(0); }
 }
 
 /* ---- Terminal ---- */
-.terminal {
+.terminal-layer {
   position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  inset: 0;
+  z-index: 800;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  pointer-events: none;
+}
+.terminal {
+  pointer-events: auto;
   width: min(760px, 94vw);
   height: min(440px, 60vh);
-  z-index: 800;
   border-radius: 14px 14px 0 0;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   font-family: var(--mono);
   box-shadow: 0 -10px 60px rgba(0, 0, 0, 0.6);
+  transition: width 0.25s ease, height 0.25s ease;
+}
+.terminal.maximized {
+  width: min(1100px, 96vw);
+  height: 86vh;
+}
+.terminal.minimized {
+  height: auto;
 }
 .terminal-bar {
   display: flex;
@@ -520,11 +610,23 @@ kbd {
   padding: 0.6rem 0.9rem;
   background: rgba(0, 0, 0, 0.35);
   border-bottom: 1px solid rgba(var(--glow), 0.15);
+  user-select: none;
 }
 .terminal-bar .dot {
-  width: 12px;
-  height: 12px;
+  width: 13px;
+  height: 13px;
   border-radius: 50%;
+  border: none;
+  padding: 0;
+  cursor: none;
+  transition: transform 0.12s ease, filter 0.12s ease;
+}
+.terminal-bar .dot:hover {
+  transform: scale(1.2);
+  filter: brightness(1.2);
+}
+.terminal-bar .dot:active {
+  transform: scale(0.9);
 }
 .dot.red { background: #ff5f56; }
 .dot.yellow { background: #ffbd2e; }

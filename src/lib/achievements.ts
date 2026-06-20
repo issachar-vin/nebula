@@ -23,15 +23,13 @@ export const ACHIEVEMENTS: AchievementDef[] = [
   { id: "dizzy", name: "Whirlwind", hint: "Shake your cursor like you mean it.", icon: "🌀" },
   { id: "piano", name: "Maestro", hint: "There is music in the keys. Find the octave.", icon: "🎹" },
   { id: "bottom", name: "The End", hint: "Go as far down as you can.", icon: "🕳️" },
-  { id: "reactor", name: "Quick Draw", hint: "Beat the reactor. Score high.", icon: "⚡" },
-  { id: "orb-pop", name: "Demolition", hint: "Pop everything in the playground.", icon: "💥" },
   { id: "theme-hunter", name: "Chameleon", hint: "Wear every skin.", icon: "🎨" },
   { id: "secret-theme", name: "Vaporwave", hint: "A theme that isn't on the menu.", icon: "📼" },
   { id: "night-owl", name: "Night Owl", hint: "Visit when the world is asleep.", icon: "🦉" },
   { id: "hash", name: "Cartographer", hint: "URLs can hide rooms. #?", icon: "🗺️" },
   { id: "console", name: "Inspector", hint: "Developers always peek behind the curtain.", icon: "🔍" },
   { id: "constellation", name: "Stargazer", hint: "Connect the dots in the sky.", icon: "✨" },
-  { id: "gravity-well", name: "Black Hole", hint: "In the playground, pull don't push.", icon: "🕳️" },
+  { id: "gravity-well", name: "Black Hole", hint: "Hold still in the drift and gather the dust.", icon: "🕳️" },
   { id: "speedrun", name: "Speedrunner", hint: "Find five secrets in under a minute.", icon: "⏱️" },
   { id: "half", name: "Halfway There", hint: "Find half of everything.", icon: "🌗" },
   { id: "completionist", name: "Completionist", hint: "Find it all. Every last one.", icon: "👑" },
@@ -84,36 +82,35 @@ class AchievementStore {
     return this.state.unlocked.length;
   }
 
-  unlock(id: string) {
+  // Grant a single secret: record it, persist, play sound, and fire the
+  // per-secret event the celebration layer listens to. Returns true if new.
+  private grant(id: string) {
     if (this.state.unlocked.includes(id)) return false;
     const def = ACHIEVEMENTS.find((a) => a.id === id);
     if (!def) return false;
-    this.state.unlocked = [...this.state.unlocked, id];
+    this.state.unlocked.push(id);
     this.state.lastUnlock = def;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(this.state.unlocked));
     sound.unlock();
+    window.dispatchEvent(new CustomEvent("nebula:unlock", { detail: id }));
+    return true;
+  }
+
+  unlock(id: string) {
+    if (!this.grant(id)) return false;
 
     // Speedrun: 5 secrets within 60s.
     const now = Date.now();
     this.unlockTimes.push(now);
     this.unlockTimes = this.unlockTimes.filter((t) => now - t <= 60_000);
-    if (this.unlockTimes.length >= 5 && !this.state.unlocked.includes("speedrun")) {
-      this.state.unlocked.push("speedrun");
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.state.unlocked));
-    }
+    if (this.unlockTimes.length >= 5) this.grant("speedrun");
 
     // Milestone meta-achievements.
     const real = this.state.unlocked.filter(
       (x) => x !== "half" && x !== "completionist",
     ).length;
-    if (real >= Math.floor(TOTAL / 2) && !this.state.unlocked.includes("half")) {
-      this.state.unlocked.push("half");
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.state.unlocked));
-    }
-    if (real >= TOTAL - 1 && !this.state.unlocked.includes("completionist")) {
-      this.state.unlocked.push("completionist");
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(this.state.unlocked));
-    }
+    if (real >= Math.floor(TOTAL / 2)) this.grant("half");
+    if (real >= TOTAL - 1) this.grant("completionist");
 
     this.emit();
     return true;

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ACHIEVEMENTS, achievements, useAchievements } from "../lib/achievements";
 import { sound } from "../lib/sound";
+import { isTyping } from "../lib/typing";
 
 function Toast() {
   const { lastUnlock } = useAchievements();
@@ -125,7 +126,7 @@ export default function AchievementUI() {
     const onKey = (e: KeyboardEvent) => {
       const t = e.target as HTMLElement;
       if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA")) return;
-      if (e.key.toLowerCase() === "t") setOpen((o) => !o);
+      if (e.key.toLowerCase() === "t" && !isTyping()) setOpen((o) => !o);
     };
     const openEvt = () => setOpen(true);
     window.addEventListener("keydown", onKey);

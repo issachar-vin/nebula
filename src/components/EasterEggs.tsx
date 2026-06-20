@@ -14,12 +14,8 @@ export default function EasterEggs() {
   const [visitor, setVisitor] = useState(false);
   const [room, setRoom] = useState(false);
 
-  // Konami code → confetti.
-  useKeySequence(KONAMI, () => {
-    unlock("konami");
-    window.dispatchEvent(new CustomEvent("nebula:confetti"));
-    sound.success();
-  });
+  // Konami code (its confetti is handled by the celebration layer).
+  useKeySequence(KONAMI, () => unlock("konami"));
 
   // Typed-word triggers.
   useTypedWords({
