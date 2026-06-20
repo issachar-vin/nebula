@@ -157,6 +157,10 @@ export default function DoodleShrine() {
               </g>
             </svg>
 
+            <div className="shrine-photo">
+              <img src="/eroizzy.jpg" alt="the real eroizzy" />
+            </div>
+
             <div className="shrine-caption">
               the legend of eroizzy.com — #TeamValor · click to dismiss
             </div>
