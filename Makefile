@@ -1,5 +1,7 @@
 .DEFAULT_GOAL := help
-.PHONY: help install dev build preview clean reinstall
+.PHONY: help install dev build preview clean reinstall docker-build docker-run
+
+IMAGE ?= nebula:local
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | \
@@ -21,3 +23,9 @@ clean: ## Remove build output and installed dependencies
 	rm -rf dist node_modules
 
 reinstall: clean install ## Clean then reinstall from scratch
+
+docker-build: ## Build the production Docker image (override with IMAGE=...)
+	docker build -t $(IMAGE) .
+
+docker-run: ## Run the image locally on http://localhost:8080
+	docker run --rm -p 8080:80 $(IMAGE)

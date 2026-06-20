@@ -21,6 +21,20 @@ make help      # list all targets
 
 (Plain `npm install` / `npm run dev` / `npm run build` work too.)
 
+### Docker
+
+```bash
+make docker-build         # build the production image (nginx serving the build)
+make docker-run           # serve it at http://localhost:8080
+```
+
+On every push to `main`, CI builds and publishes a multi-stage image to the
+GitHub Container Registry:
+
+```bash
+docker run --rm -p 8080:80 ghcr.io/issachar-vin/nebula:latest
+```
+
 ## How to play
 
 | Key        | Does                                          |
