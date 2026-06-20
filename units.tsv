@@ -1,0 +1,101 @@
+id	name	source	rarity	image
+0	Eva Unit 13	Evangelion	L	0.png
+1	Gear 5 Luffy	One Piece	L	1.png
+2	Final Form Sora	Kingdom Hearts	L	2.webp
+3	Ultra Instinct Goku	Dragon Ball	L	3.png
+4	Isaac Clark	Deadspace	L	4.webp
+5	Cloud Strife	Final Fantasy VII	UR	5.png
+6	Sephiroth	Final Fantasy VII	UR	6.png
+7	Ichigo Kurosaki Final Getsuga Tenshou	Bleach	UR	7.png
+8	Monkey D. Luffy	One Piece	UR	8.png
+9	Asuka Langley	Evangelion	UR	9.png
+10	Commander Shepard	Mass Effect	UR	10.png
+11	2B	NieR: Automata	UR	11.png
+12	Link	The Legend of Zelda	UR	12.png
+13	Mario	Super Mario Galaxy	UR	13.png
+14	Vegeta	Dragon Ball	UR	14.png
+15	Rei Ayanami	Evangelion	SSR	15.png
+16	Roronoa Zoro	One Piece	SSR	16.png
+17	Rukia Kuchiki	Bleach	SSR	17.png
+18	Faye Valentine	Cowboy Bebop	SSR	18.png
+19	Kamina	Gurren Lagann	SSR	19.png
+20	Kirby	Kirby	SSR	20.png
+21	Fox McCloud	Star Fox	SSR	21.png
+22	Cortana	Halo	SSR	22.png
+23	Frieza	Dragon Ball	SSR	23.png
+24	Aerith Gainsborough	Final Fantasy VII	SSR	24.png
+25	Kafka	Honkai: Star Rail	SSR	25.png
+26	Ratchet	Ratchet & Clank	SSR	26.png
+27	Nami	One Piece	SSR	27.png
+28	9S	NieR: Automata	SSR	28.png
+29	Aloy	Horizon	SSR	29.png
+30	Jet Black	Cowboy Bebop	SR	30.png
+31	Sanji	One Piece	SR	31.png
+32	Tony Tony Chopper	One Piece	SR	32.png
+33	Renji Abarai	Bleach	SR	33.png
+34	Toshiro Hitsugaya	Bleach	SR	34.png
+35	Simon	Gurren Lagann	SR	35.png
+36	Yoko Littner	Gurren Lagann	SR	36.png
+37	Arbiter	Halo	SR	37.png
+38	Garrus Vakarian	Mass Effect	SR	38.png
+39	Tifa Lockhart	Final Fantasy VII	SR	39.png
+40	Piccolo	Dragon Ball	SR	40.png
+41	Gohan	Dragon Ball	SR	41.png
+42	Donald Duck	Kingdom Hearts	SR	42.png
+43	Goofy	Kingdom Hearts	SR	43.png
+44	Riku	Kingdom Hearts	SR	44.png
+45	Meta Knight	Kirby	SR	45.png
+46	Falco Lombardi	Star Fox	SR	46.png
+47	Clank	Ratchet & Clank	SR	47.png
+48	March 7th	Honkai: Star Rail	SR	48.png
+49	Trunks	Dragon Ball	SR	49.png
+50	Grunt	Halo	R	50.png
+51	Sangheili Elite	Halo	R	51.png
+52	Sgt. Johnson	Halo	R	52.png
+53	343 Guilty Spark	Halo	R	53.png
+54	Jackal	Halo	R	54.png
+55	Helldiver	Helldivers 2	R	55.png
+56	Automaton Trooper	Helldivers 2	R	56.png
+57	Terminid	Helldivers 2	R	57.png
+58	Eagle-1	Helldivers 2	R	58.png
+59	Democracy Officer	Helldivers 2	R	59.png
+60	Usopp	One Piece	R	60.png
+61	Franky	One Piece	R	61.png
+62	Brook	One Piece	R	62.png
+63	Nico Robin	One Piece	R	63.png
+64	Portgas D. Ace	One Piece	R	64.png
+65	Buggy	One Piece	R	65.png
+66	Orihime Inoue	Bleach	R	66.png
+67	Yasutora Sado	Bleach	R	67.png
+68	Kenpachi Zaraki	Bleach	R	68.png
+69	Byakuya Kuchiki	Bleach	R	69.png
+70	Sosuke Aizen	Bleach	R	70.png
+71	Grimmjow	Bleach	R	71.png
+72	Misato Katsuragi	Evangelion	R	72.png
+73	Kaworu Nagisa	Evangelion	R	73.png
+74	EVA Unit-01	Evangelion	R	74.png
+75	Gendo Ikari	Evangelion	R	75.png
+76	Bulma	Dragon Ball	R	76.png
+77	Krillin	Dragon Ball	R	77.png
+78	Cell	Dragon Ball	R	78.png
+79	Majin Buu	Dragon Ball	R	79.png
+80	Beerus	Dragon Ball	R	80.png
+81	Kairi	Kingdom Hearts	R	81.png
+82	Roxas	Kingdom Hearts	R	82.png
+83	Axel	Kingdom Hearts	R	83.png
+84	King Mickey	Kingdom Hearts	R	84.png
+85	Aqua	Kingdom Hearts	R	85.png
+86	Wrex	Mass Effect	R	86.png
+87	Liara T'Soni	Mass Effect	R	87.png
+88	Legion	Mass Effect	R	88.png
+89	Tali'Zorah	Mass Effect	R	89.png
+90	Barret Wallace	Final Fantasy VII	R	90.png
+91	Vincent Valentine	Final Fantasy VII	R	91.png
+92	Zack Fair	Final Fantasy VII	R	92.png
+93	Vash the Stampede	Trigun	R	93.png
+94	Luigi	Super Mario Galaxy	R	94.png
+95	Rosalina	Super Mario Galaxy	R	95.png
+96	Bowser	Super Mario	R	96.png
+97	Sonic	Sonic the Hedgehog	R	97.png
+98	Shadow	Sonic the Hedgehog	R	98.png
+99	Stelle	Honkai: Star Rail	R	99.png

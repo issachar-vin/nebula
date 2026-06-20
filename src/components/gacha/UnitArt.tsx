@@ -1,22 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { RARITIES, type Unit } from "../../lib/gacha";
 
-// Renders a unit portrait. If an image exists at public/units/<id>.png it is
-// used; otherwise we draw a clean monogram crest (initials + signature colours
-// + orbiting motes), so the roster never depends on shipping artwork.
-
-function rng(seed: number) {
-  let t = seed >>> 0;
-  return () => {
-    t = (t + 0x6d2b79f5) | 0;
-    let x = Math.imul(t ^ (t >>> 15), 1 | t);
-    x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x;
-    return ((x ^ (x >>> 14)) >>> 0) / 4294967296;
-  };
-}
+// Renders a unit portrait inside a fixed rounded-rectangle frame. If the image
+// at public/units/<img> loads it is shown *contained* (whole image, no crop) on
+// the unit's colour backdrop; otherwise we draw a monogram crest. Uniform frame
+// size across every card regardless of source image dimensions.
 
 function initials(name: string) {
-  const words = name.replace(/[.:]/g, "").split(/\s+/).filter(Boolean);
+  const words = name.replace(/[.:'-]/g, "").split(/\s+/).filter(Boolean);
   const a = words[0]?.[0] ?? "?";
   const b = words.length > 1 ? words[words.length - 1][0] : (words[0]?.[1] ?? "");
   return (a + b).toUpperCase();
@@ -35,17 +26,13 @@ export default function UnitArt({
   animate?: boolean;
 }) {
   const rdef = RARITIES[unit.rarity];
-  const src = unit.img ?? `${import.meta.env.BASE_URL}units/${unit.id}.png`;
+  const src = `${import.meta.env.BASE_URL}units/${unit.img || `${unit.id}.png`}`;
   const [imgOk, setImgOk] = useState(imgCache.get(src) === "ok");
 
   useEffect(() => {
     const cached = imgCache.get(src);
-    if (cached === "ok") {
-      setImgOk(true);
-      return;
-    }
-    if (cached === "fail") {
-      setImgOk(false);
+    if (cached) {
+      setImgOk(cached === "ok");
       return;
     }
     let alive = true;
@@ -64,36 +51,9 @@ export default function UnitArt({
     };
   }, [src]);
 
-  const deco = useMemo(() => {
-    const rand = rng(unit.seed);
-    const orbits = 3 + rdef.rank;
-    const orbitR = 46 + rand() * 5;
-    const dots = Array.from({ length: orbits }, (_, i) => {
-      const a = (i / orbits) * Math.PI * 2 + rand() * 0.5;
-      return {
-        x: (60 + Math.cos(a) * orbitR).toFixed(1),
-        y: (60 + Math.sin(a) * orbitR).toFixed(1),
-        r: (1.6 + rand() * 2.2).toFixed(1),
-        c: i % 2 ? unit.c2 : "#ffffff",
-      };
-    });
-    const rays =
-      rdef.rank >= 2
-        ? Array.from({ length: 12 }, (_, i) => {
-            const a = (i / 12) * Math.PI * 2;
-            return {
-              x1: (60 + Math.cos(a) * 34).toFixed(1),
-              y1: (60 + Math.sin(a) * 34).toFixed(1),
-              x2: (60 + Math.cos(a) * 54).toFixed(1),
-              y2: (60 + Math.sin(a) * 54).toFixed(1),
-              w: i % 2 ? 1 : 2.2,
-            };
-          })
-        : [];
-    return { dots, rays, mono: initials(unit.name) };
-  }, [unit, rdef.rank]);
-
+  const mono = useMemo(() => initials(unit.name), [unit.name]);
   const gid = `ua-${unit.id}`;
+
   return (
     <svg
       viewBox="0 0 120 120"
@@ -104,18 +64,18 @@ export default function UnitArt({
     >
       <defs>
         <radialGradient id={`${gid}-bg`} cx="50%" cy="40%" r="75%">
-          <stop offset="0%" stopColor={unit.c1} stopOpacity="0.55" />
+          <stop offset="0%" stopColor={unit.c1} stopOpacity="0.5" />
           <stop offset="100%" stopColor="#06060f" />
         </radialGradient>
-        <radialGradient id={`${gid}-disc`} cx="38%" cy="32%" r="80%">
+        <radialGradient id={`${gid}-back`} cx="40%" cy="32%" r="85%">
           <stop offset="0%" stopColor={unit.c2} />
           <stop offset="100%" stopColor={unit.c1} />
         </radialGradient>
         <clipPath id={`${gid}-clip`}>
-          <circle cx="60" cy="60" r="31" />
+          <rect x="12" y="12" width="96" height="96" rx="14" />
         </clipPath>
-        <filter id={`${gid}-glow`} x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation={rdef.rank >= 3 ? 3 : 1.6} result="b" />
+        <filter id={`${gid}-glow`} x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur stdDeviation={rdef.rank >= 3 ? 2.6 : 1.4} result="b" />
           <feMerge>
             <feMergeNode in="b" />
             <feMergeNode in="SourceGraphic" />
@@ -125,31 +85,32 @@ export default function UnitArt({
 
       <rect x="0" y="0" width="120" height="120" rx="12" fill={`url(#${gid}-bg)`} />
 
-      {deco.rays.map((r, i) => (
-        <line key={i} x1={r.x1} y1={r.y1} x2={r.x2} y2={r.y2} stroke={rdef.color} strokeWidth={r.w} opacity={0.45} />
-      ))}
-
-      <g className="ua-orbit">
-        {deco.dots.map((d, i) => (
-          <circle key={i} cx={d.x} cy={d.y} r={d.r} fill={d.c} />
-        ))}
-      </g>
-
-      <g filter={`url(#${gid}-glow)`} className="ua-core">
-        <circle cx="60" cy="60" r="31" fill={`url(#${gid}-disc)`} stroke="#ffffff" strokeWidth="1.5" strokeOpacity="0.55" />
+      <g filter={`url(#${gid}-glow)`}>
+        {/* colour backdrop (also the letterbox behind contained images) */}
+        <rect
+          x="12"
+          y="12"
+          width="96"
+          height="96"
+          rx="14"
+          fill={`url(#${gid}-back)`}
+          stroke="#ffffff"
+          strokeWidth="1.5"
+          strokeOpacity="0.5"
+        />
         {imgOk ? (
           <image
             href={src}
-            x="29"
-            y="29"
-            width="62"
-            height="62"
+            x="12"
+            y="12"
+            width="96"
+            height="96"
             clipPath={`url(#${gid}-clip)`}
-            preserveAspectRatio="xMidYMid slice"
+            preserveAspectRatio="xMidYMid meet"
           />
         ) : (
           <>
-            <circle cx="51" cy="49" r="7" fill="#ffffff" opacity="0.25" />
+            <circle cx="48" cy="42" r="8" fill="#ffffff" opacity="0.22" />
             <text
               x="60"
               y="62"
@@ -157,10 +118,10 @@ export default function UnitArt({
               dominantBaseline="central"
               className="ua-mono"
               fill="#ffffff"
-              fontSize={deco.mono.length > 1 ? 30 : 38}
+              fontSize={mono.length > 1 ? 34 : 44}
               fontWeight="800"
             >
-              {deco.mono}
+              {mono}
             </text>
           </>
         )}
