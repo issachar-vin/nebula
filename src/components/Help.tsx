@@ -18,6 +18,7 @@ const NUDGES = [
   "That old arcade cheat code still works here.",
   "Open your browser's dev console. Say hi.",
   "URLs can hide rooms. Try ending one with #void.",
+  "Summon characters from the ✦ summon button in the top-right nav.",
   "Knock on the logo. Keep knocking.",
   "Some secrets reward patience. Others reward speed.",
 ];

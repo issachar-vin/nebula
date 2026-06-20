@@ -30,7 +30,7 @@ const ACCENT = ["#7c5cff", "#22d3ee"];
 
 const EFFECTS: Record<string, Effect> = {
   "first-contact": { kind: "bloom", colors: ACCENT },
-  konami: { kind: "confetti", colors: RAINBOW },
+  konami: { kind: "bloom", colors: RAINBOW },
   terminal: { kind: "glitch", colors: ["#34e89e"] },
   matrix: { kind: "emojiRain", emoji: "💊", colors: ["#34e89e"] },
   disco: { kind: "spiral", colors: RAINBOW },

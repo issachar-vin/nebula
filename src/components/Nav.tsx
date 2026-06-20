@@ -24,6 +24,17 @@ export default function Nav() {
         ◈ NEBULA
       </div>
       <div className="nav-links">
+        <span
+          className="nav-summon"
+          onClick={() => {
+            window.dispatchEvent(new CustomEvent("nebula:gacha-open"));
+            sound.blip();
+          }}
+          data-cursor
+          title="summon characters"
+        >
+          ✦ summon
+        </span>
         <span onClick={() => cycle()} data-cursor title={`theme: ${current}`}>
           ◐
         </span>

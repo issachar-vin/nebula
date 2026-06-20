@@ -213,6 +213,10 @@ p.lead {
 .nav-links span:hover {
   opacity: 1;
 }
+.nav-links .nav-summon {
+  font-weight: 700;
+  opacity: 1;
+}
 @media (max-width: 640px) {
   .nav-links {
     display: none;
@@ -814,6 +818,281 @@ body.dizzy #root {
 body.gravity-on [data-grav] {
   display: inline-block;
   will-change: transform;
+}
+
+/* ════════════════════════ Gacha / Summon ════════════════════════ */
+.gx {
+  position: fixed;
+  inset: 0;
+  z-index: 1040;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 50% 40%, #11091f, #04040a 80%);
+  font-family: var(--mono);
+  overflow: hidden;
+  cursor: none;
+}
+.gx-aura-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.summon-aura {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.gx > *:not(.gx-aura-wrap):not(.gx-skip):not(.gx-reveal) {
+  position: relative;
+  z-index: 1;
+}
+
+.gx-eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+  text-align: center;
+}
+.gx-title {
+  font-family: var(--font);
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  font-weight: 700;
+  text-align: center;
+  margin: 0.3rem 0;
+}
+.gx-title.sm { font-size: clamp(1.2rem, 3vw, 1.8rem); margin: 0; }
+.gx-rates { text-align: center; color: var(--muted); font-size: 0.85rem; margin: 0.6rem 0 1.4rem; }
+.gx-row { display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center; }
+
+.gx-banner { display: flex; flex-direction: column; align-items: center; padding: 2rem; }
+.gx-portal {
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  margin: 1.6rem auto;
+  background: radial-gradient(circle at 40% 35%, #fff, var(--accent) 42%, #160d2e 78%);
+  box-shadow: 0 0 70px rgba(var(--glow), 0.7), inset 0 0 30px rgba(255, 255, 255, 0.4);
+  animation: gxFloat 4s ease-in-out infinite;
+}
+.gx-portal.god {
+  background: conic-gradient(from 0deg, #ff5ec7, #ffc23d, #48e6a0, #5aa9ff, #b06bff, #ff5ec7);
+  box-shadow: 0 0 80px #ff5ec7aa;
+  animation: gxFloat 4s ease-in-out infinite, gxSpin 7s linear infinite;
+}
+.gx-portal-gap { height: clamp(170px, 32vh, 250px); }
+@keyframes gxFloat { 50% { transform: translateY(-14px); } }
+@keyframes gxSpin { to { transform: rotate(360deg); } }
+
+.btn.gx-summon {
+  border-color: var(--accent);
+  background: rgba(var(--glow), 0.18);
+  font-weight: 700;
+}
+.btn.gx-summon.god {
+  border: none;
+  color: #190a1f;
+  background: linear-gradient(90deg, #ff5ec7, #ffc23d, #48e6a0, #5aa9ff, #b06bff);
+  background-size: 300% 100%;
+  animation: gxRainbowBg 4s linear infinite;
+}
+@keyframes gxRainbowBg { to { background-position: 300% 0; } }
+
+/* Solid backings so buttons stay readable over the animated portal */
+.gx .btn {
+  background: rgba(10, 10, 22, 0.82);
+  border-color: rgba(var(--glow), 0.55);
+  backdrop-filter: blur(6px);
+}
+.gx .btn:hover {
+  background: rgba(26, 26, 48, 0.92);
+}
+.gx .btn.gx-summon:not(.god) {
+  background: rgba(var(--glow), 0.5);
+  border-color: var(--accent);
+}
+
+/* charge */
+.gx-charge { display: flex; flex-direction: column; align-items: center; gap: 1.4rem; }
+.gx-charge-core {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 6px solid currentColor;
+  border-top-color: transparent;
+  box-shadow: 0 0 60px currentColor, inset 0 0 34px currentColor;
+}
+.gx-charge-text {
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #fff;
+  font-size: 0.9rem;
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+/* reveal */
+.gx-reveal {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.gx-reveal-hint {
+  position: absolute;
+  bottom: 8vh;
+  color: var(--muted);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  animation: pulse 1.6s ease-in-out infinite;
+}
+.gx-skip { position: absolute; bottom: 1.4rem; right: 1.4rem; z-index: 4; }
+.gx-count { position: absolute; top: 1.6rem; left: 1.6rem; color: var(--muted); z-index: 4; }
+.gx-projectile {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* cards + rarity frames */
+.gx-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 1rem;
+  border-radius: 16px;
+  border: 2px solid var(--r-color, #5aa9ff);
+  background: rgba(8, 8, 18, 0.82);
+  box-shadow: 0 0 28px var(--r-color, #5aa9ff);
+}
+.gx-card.big { padding: 1.6rem 1.8rem; }
+.gx-card.rainbow { animation: gxRainbow 3.2s linear infinite; }
+@keyframes gxRainbow { to { filter: hue-rotate(360deg); } }
+.gx-card-name { font-family: var(--font); font-weight: 700; font-size: 1.4rem; }
+.gx-card-name.sm { font-size: 0.8rem; }
+.gx-card-sub { color: var(--muted); font-size: 0.85rem; }
+.gx-rarity-tag {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 2px 12px;
+  border-radius: 999px;
+  background: var(--r-color);
+  color: #0a0a14;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+.gx-rarity-tag.sm { font-size: 0.62rem; padding: 1px 7px; top: -8px; }
+.gx-new {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #ff3b6b;
+  color: #fff;
+  font-size: 0.62rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 6px;
+  transform: rotate(8deg);
+}
+.gx-new.sm { font-size: 0.52rem; padding: 1px 4px; }
+
+/* summary + collection grids */
+.gx-summary { display: flex; flex-direction: column; align-items: center; gap: 1.4rem; padding: 2rem; width: min(900px, 96vw); }
+.gx-grid { display: grid; gap: 0.8rem; }
+.gx-grid.ten { grid-template-columns: repeat(5, 1fr); width: min(820px, 96vw); }
+.gx-collection {
+  width: min(1000px, 96vw);
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.6rem;
+}
+.gx-collection-head { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+.gx-legend { display: flex; gap: 1rem; font-size: 0.78rem; flex-wrap: wrap; }
+.gx-grid.coll {
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  overflow-y: auto;
+  padding: 0.3rem;
+}
+.gx-cell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px;
+  border-radius: 12px;
+  border: 1.5px solid var(--r-color, #333);
+  background: rgba(8, 8, 18, 0.7);
+  cursor: none;
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+.gx-cell:hover { transform: translateY(-3px); box-shadow: 0 0 18px var(--r-color); }
+.gx-cell.locked { border-color: #222; opacity: 0.55; aspect-ratio: 1; align-items: center; justify-content: center; }
+.gx-cell.rainbow { animation: gxRainbow 3.2s linear infinite; }
+.gx-lock { font-size: 2rem; color: #444; }
+.gx-stars { color: #ffd24a; font-size: 0.85rem; letter-spacing: 1px; }
+.gx-stars-empty { color: #3a3a4a; }
+.gx-qty {
+  position: absolute;
+  bottom: 4px;
+  right: 6px;
+  font-size: 0.66rem;
+  color: var(--fg);
+  background: rgba(0, 0, 0, 0.5);
+  padding: 0 4px;
+  border-radius: 4px;
+}
+
+/* detail / merge */
+.gx-detail-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1060;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.gx-detail {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 2rem;
+  border-radius: 20px;
+  border: 2px solid var(--r-color);
+  background: rgba(8, 8, 18, 0.95);
+  box-shadow: 0 0 50px var(--r-color);
+  width: min(380px, 92vw);
+}
+.gx-detail.rainbow { animation: gxRainbow 3.2s linear infinite; }
+.gx-detail-stats { color: var(--muted); font-size: 0.85rem; }
+.gx-maxed { color: #ffd24a; font-weight: 700; letter-spacing: 2px; }
+.btn:disabled { opacity: 0.45; }
+
+/* procedural unit art animations */
+.unit-art.animate .ua-orbit { transform-origin: 60px 60px; animation: gxSpin 16s linear infinite; }
+.unit-art.animate.rank-3 .ua-orbit { animation-duration: 10s; }
+.unit-art.animate.rank-4 .ua-orbit { animation-duration: 6s; }
+.unit-art.animate .ua-core { transform-origin: 60px 60px; animation: uaPulse 3.4s ease-in-out infinite; }
+@keyframes uaPulse { 0%, 100% { opacity: 0.92; } 50% { opacity: 1; transform: scale(1.03); } }
+
+@media (max-width: 560px) {
+  .gx-grid.ten { grid-template-columns: repeat(3, 1fr); }
 }
 
 @media (prefers-reduced-motion: reduce) {

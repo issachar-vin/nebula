@@ -12,7 +12,7 @@ export interface AchievementDef {
 // The full catalogue of secrets. Keep ids stable — they persist in storage.
 export const ACHIEVEMENTS: AchievementDef[] = [
   { id: "first-contact", name: "First Contact", hint: "Just... arrive.", icon: "👋" },
-  { id: "konami", name: "The Old Ways", hint: "↑ ↑ ↓ ↓ ← → ← → B A", icon: "🎮" },
+  { id: "konami", name: "Konami Code", hint: "↑ ↑ ↓ ↓ ← → ← → B A", icon: "🎮" },
   { id: "terminal", name: "Root Access", hint: "Every good site has a back door. Try a tilde.", icon: "⌨️" },
   { id: "matrix", name: "Down the Rabbit Hole", hint: "Type what Neo saw.", icon: "💊" },
   { id: "disco", name: "Saturday Night", hint: "Type a word that makes things dance.", icon: "🪩" },
