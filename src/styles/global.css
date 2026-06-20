@@ -210,7 +210,8 @@ p.lead {
   opacity: 0.8;
   transition: opacity 0.2s;
 }
-.nav-links span:hover {
+.nav-links span:hover,
+.nav-links span:active {
   opacity: 1;
 }
 .nav-links .nav-summon {
@@ -219,7 +220,7 @@ p.lead {
 }
 @media (max-width: 640px) {
   .nav-links {
-    display: none;
+    gap: 0.8rem;
   }
 }
 
@@ -523,7 +524,8 @@ p.lead {
   border-color: rgba(var(--glow), 0.5);
   box-shadow: 0 0 20px rgba(var(--glow), 0.2);
 }
-.trophy.got:hover { transform: translateY(-3px); }
+.trophy.got:hover,
+.trophy.got:active { transform: translateY(-3px); }
 .trophy-icon { font-size: 1.8rem; }
 .trophy-name { font-weight: 700; margin: 0.3rem 0; font-size: 0.95rem; }
 .trophy-hint {
@@ -1038,7 +1040,8 @@ body.gravity-on [data-grav] {
   cursor: none;
   transition: transform 0.15s ease, box-shadow 0.2s ease;
 }
-.gx-cell:hover { transform: translateY(-3px); box-shadow: 0 0 18px var(--r-color); }
+.gx-cell:hover,
+.gx-cell:active { transform: translateY(-3px); box-shadow: 0 0 18px var(--r-color); }
 .gx-cell.locked { border-color: #222; opacity: 0.55; aspect-ratio: 1; align-items: center; justify-content: center; }
 .gx-cell.rainbow { animation: gxRainbow 3.2s linear infinite; }
 .gx-lock { font-size: 2rem; color: #444; }
@@ -1091,8 +1094,19 @@ body.gravity-on [data-grav] {
 .unit-art.animate .ua-core { transform-origin: 60px 60px; animation: uaPulse 3.4s ease-in-out infinite; }
 @keyframes uaPulse { 0%, 100% { opacity: 0.92; } 50% { opacity: 1; transform: scale(1.03); } }
 
+@media (max-width: 700px) {
+  .gx-grid.ten { grid-template-columns: repeat(4, 1fr); }
+}
 @media (max-width: 560px) {
   .gx-grid.ten { grid-template-columns: repeat(3, 1fr); }
+  .gx-grid.coll { grid-template-columns: repeat(auto-fill, minmax(76px, 1fr)); }
+}
+
+/* ---- Mobile readability ---- */
+@media (max-width: 640px) {
+  .eyebrow { font-size: 0.85rem; }
+  .nav-links { font-size: 0.9rem; }
+  .hud { font-size: 0.85rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
