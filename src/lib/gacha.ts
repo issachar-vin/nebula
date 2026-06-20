@@ -60,7 +60,7 @@ const CATALOGUE: { rarity: Rarity; rows: Row[] }[] = [
       ["Sephiroth", "Final Fantasy VII", "🌑", "#c8ccd4", "#1a1a22", "6.png"],
       ["Ichigo Kurosaki Final Getsuga Tenshou", "Bleach", "🗡️", "#e8662a", "#1a1a22", "7.png"],
       ["Monkey D. Luffy", "One Piece", "🏴‍☠️", "#d23a3a", "#f0c04a", "8.png"],
-      ["Asuka Langley", "Evangelion", "🤖", "#d23a4a", "#f0703a", "9.png"],
+      ["Asuka Langley", "Evangelion", "🤖", "#d23a4a", "#f0703a", "9.webp"],
       ["Commander Shepard", "Mass Effect", "🔫", "#b03030", "#2a3550", "10.png"],
       ["2B", "NieR: Automata", "🖤", "#1a1a22", "#d8d2c0", "11.png"],
       ["Link", "The Legend of Zelda", "🛡️", "#2f7d4f", "#d4af37", "12.png"],
@@ -71,7 +71,7 @@ const CATALOGUE: { rarity: Rarity; rows: Row[] }[] = [
   {
     rarity: "SSR",
     rows: [
-      ["Rei Ayanami", "Evangelion", "🤍", "#6fc0d0", "#d23a4a", "15.png"],
+      ["Rei Ayanami", "Evangelion", "🤍", "#6fc0d0", "#d23a4a", "15.jpg"],
       ["Roronoa Zoro", "One Piece", "⚔️", "#2f7d5a", "#1a1a22", "16.png"],
       ["Rukia Kuchiki", "Bleach", "❄️", "#2a2a40", "#c0c8e0", "17.png"],
       ["Faye Valentine", "Cowboy Bebop", "💜", "#b03060", "#e0c050", "18.png"],
