@@ -15,8 +15,11 @@ export default function EasterEggs() {
   const [visitor, setVisitor] = useState(false);
   const [room, setRoom] = useState(false);
 
-  // Konami code (its confetti is handled by the celebration layer).
-  useKeySequence(KONAMI, () => unlock("konami"));
+  // Konami code: arm the god pack and open the gacha, ready to pull.
+  useKeySequence(KONAMI, () => {
+    unlock("konami");
+    window.dispatchEvent(new CustomEvent("nebula:gacha-godpack"));
+  });
 
   // Typed-word triggers.
   useTypedWords({

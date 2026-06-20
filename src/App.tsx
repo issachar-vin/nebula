@@ -13,6 +13,7 @@ import EasterEggs from "./components/EasterEggs";
 import DoodleShrine from "./components/DoodleShrine";
 import Help from "./components/Help";
 import AchievementUI from "./components/AchievementUI";
+import Gacha from "./components/gacha/Gacha";
 
 export default function App() {
   return (
@@ -37,6 +38,7 @@ export default function App() {
       <EasterEggs />
       <DoodleShrine />
       <Help />
+      <Gacha />
       <AchievementUI />
       <Cursor />
     </>
