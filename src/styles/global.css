@@ -389,6 +389,34 @@ p.lead {
   transform: rotate(24deg);
 }
 .shrine svg { position: relative; width: 100%; height: 100%; display: block; }
+.shrine-photo {
+  position: absolute;
+  top: 34px;
+  left: 56px;
+  width: 88px;
+  padding: 6px 6px 16px;
+  background: #fff;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.35);
+  transform: rotate(-7deg);
+}
+.shrine-photo img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+}
+.shrine-photo::after {
+  content: "";
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  width: 38px;
+  height: 18px;
+  background: rgba(220, 225, 235, 0.5);
+  border-left: 1px dashed rgba(255, 255, 255, 0.4);
+  border-right: 1px dashed rgba(255, 255, 255, 0.4);
+  transform: translateX(-50%) rotate(-3deg);
+}
 .shrine .ink {
   fill: none;
   stroke: #1b2440;
