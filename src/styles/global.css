@@ -349,126 +349,44 @@ p.lead {
   backdrop-filter: blur(8px);
   cursor: none;
 }
-.shrine-paper {
+.shrine-polaroid {
   position: relative;
-  width: min(460px, 92vw);
-  aspect-ratio: 420 / 620;
-  background:
-    radial-gradient(120% 80% at 30% 0%, rgba(255, 250, 220, 0.6), transparent 60%),
-    repeating-linear-gradient(transparent, transparent 27px, #aecbe8 27px, #aecbe8 28px),
-    #fdf8ea;
-  border-radius: 4px;
+  width: min(480px, 86vw);
+  background: #fdfdf8;
+  padding: 22px 22px 64px;
   box-shadow:
     0 30px 90px rgba(0, 0, 0, 0.7),
-    0 0 70px rgba(var(--glow), 0.45),
-    inset 0 0 60px rgba(180, 160, 110, 0.18);
-  overflow: hidden;
+    0 0 70px rgba(var(--glow), 0.45);
 }
-/* red margin line */
-.shrine-paper::before {
-  content: "";
-  position: absolute;
-  left: 34px;
-  top: 0;
-  bottom: 0;
-  width: 1.5px;
-  background: #e79a9a;
-  opacity: 0.8;
-}
-/* tape strip, top-right corner */
-.shrine-paper::after {
-  content: "";
-  position: absolute;
-  top: -10px;
-  right: 18px;
-  width: 70px;
-  height: 26px;
-  background: rgba(220, 225, 235, 0.35);
-  border-left: 1px dashed rgba(255, 255, 255, 0.4);
-  border-right: 1px dashed rgba(255, 255, 255, 0.4);
-  transform: rotate(24deg);
-}
-.shrine svg { position: relative; width: 100%; height: 100%; display: block; }
-.shrine-photo {
-  position: absolute;
-  top: 34px;
-  left: 56px;
-  width: 88px;
-  padding: 6px 6px 16px;
-  background: #fff;
-  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.35);
-  transform: rotate(-7deg);
-}
-.shrine-photo img {
+.shrine-polaroid img {
   display: block;
   width: 100%;
   aspect-ratio: 2 / 3;
   object-fit: cover;
 }
-.shrine-photo::after {
-  content: "";
+.shrine-polaroid-caption {
   position: absolute;
-  top: -9px;
-  left: 50%;
-  width: 38px;
-  height: 18px;
-  background: rgba(220, 225, 235, 0.5);
-  border-left: 1px dashed rgba(255, 255, 255, 0.4);
-  border-right: 1px dashed rgba(255, 255, 255, 0.4);
-  transform: translateX(-50%) rotate(-3deg);
-}
-.shrine .ink {
-  fill: none;
-  stroke: #1b2440;
-  stroke-width: 2.3;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-.shrine .ink.thin { stroke-width: 1.4; }
-.shrine .fill-hair { fill: #1b2440; stroke: none; }
-.shrine .vape { fill: #1b2440; stroke: none; }
-.shrine-hole {
-  fill: rgba(0, 0, 0, 0.12);
-  stroke: rgba(0, 0, 0, 0.18);
-  stroke-width: 1;
-}
-.flame {
-  animation: flicker 0.45s ease-in-out infinite alternate;
-}
-@keyframes flicker {
-  from { opacity: 0.82; }
-  to { opacity: 1; }
-}
-.shrine-tag {
-  font-family: "Comic Sans MS", "Marker Felt", "Segoe Print", cursive;
-  fill: #1b2440;
-  font-size: 15px;
-}
-.shrine-bang {
-  font-family: "Comic Sans MS", "Marker Felt", cursive;
-  fill: #1b2440;
-  font-size: 34px;
-  font-weight: 700;
-}
-.shrine-url {
-  font-family: "Arial Black", "Impact", system-ui, sans-serif;
-  fill: #fdf8ea;
-  stroke: #1b2440;
-  stroke-width: 2.4;
-  paint-order: stroke fill;
-  font-weight: 900;
-  letter-spacing: -1px;
-}
-.shrine-caption {
-  position: absolute;
-  bottom: -2.6rem;
+  bottom: 18px;
   left: 0;
   right: 0;
   text-align: center;
-  font-family: var(--mono);
-  font-size: 0.8rem;
-  color: var(--muted);
+  font-family: "Comic Sans MS", "Marker Felt", "Segoe Print", cursive;
+  color: #1b2440;
+  font-size: 1.2rem;
 }
+.shrine-tape {
+  position: absolute;
+  width: 90px;
+  height: 32px;
+  background: rgba(220, 225, 235, 0.55);
+  border-left: 1px dashed rgba(255, 255, 255, 0.5);
+  border-right: 1px dashed rgba(255, 255, 255, 0.5);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+.shrine-tape.tl { top: -16px; left: -18px; transform: rotate(-42deg); }
+.shrine-tape.tr { top: -16px; right: -18px; transform: rotate(42deg); }
+.shrine-tape.bl { bottom: -16px; left: -18px; transform: rotate(42deg); }
+.shrine-tape.br { bottom: -16px; right: -18px; transform: rotate(-42deg); }
 
 /* ---- Toast ---- */
 .toast-wrap {
