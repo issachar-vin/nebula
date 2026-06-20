@@ -3,7 +3,8 @@
 An interactive, animation-heavy single-page playground built for fun. Everything
 on the page reacts to you, and **most of it is hidden**. There are **23 secrets**
 to discover — through the keyboard, the corners, the sky, the URL bar, and the
-dev console.
+dev console — plus a full **gacha summon minigame** with 100 characters to
+collect and upgrade.
 
 Hand-built with **React + TypeScript + Vite**, **framer-motion**, the **Canvas
 2D API**, **WebGL**, and the **Web Audio API**. No sound or image assets — every
@@ -63,7 +64,7 @@ tracked in the **trophy case** (`T`), persisted in `localStorage`.
 | Secret | How to trigger | What happens | What it means |
 | --- | --- | --- | --- |
 | 👋 **First Contact** | Just arrive — the first click or keypress (or ~4s on the page) | Boots the Web Audio engine and unlocks | You showed up. The audio can't start without a user gesture, so this doubles as the "sound is on" moment |
-| 🎮 **The Old Ways** | The Konami code: `↑ ↑ ↓ ↓ ← → ← → B A` | Confetti bursts across the screen | A nod to the classic Konami arcade cheat (Gradius/Contra, 1986) — the canonical hidden code |
+| 🎮 **Konami Code** | The Konami code: `↑ ↑ ↓ ↓ ← → ← → B A` (works anywhere, even on the summon screen) | Silently arms a **god pack** and opens the gacha — the next 10-pull is a guaranteed 5 Legendary + 5 Ultra Rare | A nod to the classic Konami arcade cheat (Gradius/Contra, 1986) — the canonical hidden code |
 | ⌨️ **Root Access** | Press `~` (or `` ` ``) | A draggable terminal slides up — drag the title bar, use the red/yellow/green buttons, run commands | Every serious site has a back door |
 | 💊 **Down the Rabbit Hole** | Type `matrix` anywhere | Green katakana code-rain floods the screen (`Esc` to clear) | "Type what Neo saw" — *The Matrix* |
 | 🪩 **Saturday Night** | Type `disco` | Spinning colored light beams + a hue-cycling disco mode (`Esc` to stop) | *Saturday Night Fever* — a word that makes things dance |
@@ -96,6 +97,27 @@ spacetime, with a volumetric accretion disk (Keplerian rotation, relativistic
 Doppler beaming, a photon ring). **Drag** to orbit the camera, **scroll** to
 zoom, `Esc` (or the ✕ button) to leave.
 
+### Summon (gacha minigame)
+
+Open it any time from the **✦ summon** button in the top-right nav. It's a
+full gacha: a 10-pull summon of **100 characters** drawn from space- and
+world-spanning games & anime (Halo, Cowboy Bebop, Kingdom Hearts, Dragon Ball,
+One Piece, Bleach, Evangelion, Mass Effect, Helldivers 2, NieR, FF7, Metroid,
+Honkai: Star Rail, and more — fan tributes via signature colours + a monogram
+crest, or drop your own art into `public/units/<id>.png`).
+
+- **Rarities & rates:** L 1% · UR 5% · SSR 10% · SR 50% · R 34% (the 10th of a
+  pull is guaranteed SR or better). Popularity drives rarity — the most iconic
+  characters are Legendary/Ultra Rare.
+- **The pull:** all 10 are decided up front, so the charge animation is tinted
+  by the pool's best rarity (rainbow = a Legendary is incoming) over a WebGL
+  black-hole portal. Each unit then **warps out** as a ray of light that circles
+  the screen, spirals in, and explodes into the card. **Skip** (bottom-right)
+  jumps to the summary of all 10.
+- **Collection & merging:** every pull is saved (`localStorage`). Feed duplicates
+  to raise a unit's stars — the Nth star costs N dupes, up to 5★.
+- **Konami code** silently guarantees a god pack (see the secrets list).
+
 ### Terminal commands (`~`)
 
 `help` · `secrets` (or `ls`) · `stats` · `theme <name>` · `themes` · `matrix` ·
@@ -126,6 +148,6 @@ src/
 - React 18 + TypeScript, bundled by Vite
 - framer-motion for declarative animation
 - Canvas 2D for the starfield, the drift field, matrix rain, and per-secret celebration effects
-- WebGL for the geodesic black-hole renderer
+- WebGL for the geodesic black-hole renderer and the gacha summon portal
 - Web Audio API for all synthesized sound
 - Zero runtime asset dependencies
